@@ -1,3 +1,7 @@
+*   Added `--model-name` scaffld\_controller\_generator option.
+
+    *yalab*
+
 *   Fix `rake environment` to do not eager load modules
 
     *Paul Nikitochkin*
