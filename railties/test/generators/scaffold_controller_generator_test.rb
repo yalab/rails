@@ -173,6 +173,36 @@ class ScaffoldControllerGeneratorTest < Rails::Generators::TestCase
       assert_instance_method :index, content do |m|
         assert_match("@users = User.all", m)
       end
+      assert_instance_method :create, content do |m|
+        assert_match("redirect_to [:admin, @user], notice: 'User was successfully created.'", m)
+      end
+      assert_instance_method :update, content do |m|
+        assert_match("redirect_to [:admin, @user], notice: 'User was successfully updated.'", m)
+      end
+    end
+
+    assert_file "app/views/admin/users/_form.html.erb" do |content|
+      assert_match("<%= form_for([:admin, @user]) do |f| %>", content)
+    end
+
+    assert_file "app/views/admin/users/index.html.erb" do |content|
+      assert_match("<td><%= link_to 'Show', [:admin, user] %></td>", content)
+      assert_match("<td><%= link_to 'Edit', edit_admin_user_path(user) %></td>", content)
+      assert_match("<td><%= link_to 'Destroy', [:admin, user], method: :delete, data: { confirm: 'Are you sure?' } %></td>", content)
+      assert_match("<%= link_to 'New User', new_admin_user_path %>", content)
+    end
+
+    assert_file "app/views/admin/users/edit.html.erb" do |content|
+      assert_match("<%= link_to 'Show', [:admin, @user] %>", content)
+      assert_match("<%= link_to 'Back', admin_users_path %>", content)
+    end
+
+    assert_file "app/views/admin/users/show.html.erb" do |content|
+      assert_match("<%= link_to 'Edit', edit_admin_user_path(@user) %>", content)
+    end
+
+    assert_file "test/controllers/admin/users_controller_test.rb" do |content|
+      assert_match(" assert_redirected_to admin_user_path(assigns(:user))", content)
     end
   end
 end

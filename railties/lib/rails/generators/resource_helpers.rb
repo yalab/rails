@@ -88,6 +88,27 @@ module Rails
         def orm_instance(name=singular_table_name)
           @orm_instance ||= orm_class.new(name)
         end
+
+        def namespaced_variable_name(name, prefix='')
+          if controller_class_path.present?
+            names = controller_class_path.map{|path| ':' + path } << prefix + singular_table_name
+            "[" + names.join(', ') + "]"
+          else
+            prefix + singular_table_name
+          end
+        end
+
+        def namespaced_ivar_name(name)
+          namespaced_variable_name(name, '@')
+        end
+
+        def index_helper
+          if options[:model_name]
+            controller_file_path.gsub('/', '_')
+          else
+            super
+          end
+        end
     end
   end
 end

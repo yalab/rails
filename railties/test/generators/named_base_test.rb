@@ -134,6 +134,7 @@ class NamedBaseTest < Rails::Generators::TestCase
     assert_name g, 'admin/foos',  :controller_file_path
     assert_name g, 'foos',        :controller_file_name
     assert_name g, 'admin.foos',  :controller_i18n_scope
+    assert_name g, 'admin_foos',  :index_helper
   end
 
   protected
