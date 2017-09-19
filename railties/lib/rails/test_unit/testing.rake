@@ -55,4 +55,7 @@ namespace :test do
     $: << "test"
     Rails::TestUnit::Runner.rake_run(["test/system"])
   end
+
+  desc "Runs all tests"
+  task all: [:test, :system]
 end
